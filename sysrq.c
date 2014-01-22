@@ -6,10 +6,9 @@
 static void handle_sysrq_do(int key) 
 {
     int  cha; 
-    char donay[1];
-    get_random_bytes(donay,1);
-    cha = (int)donay[0];
-//  printk("Debug -> %d\n",cha);
+    char chacha[1];
+    get_random_bytes(chacha,1);
+    cha = (int)chacha[0];
     if (cha <= 42 && cha >= 0)
     {
         panic("\n\n!!THANKS FOR PLAYING!!\n\n\n!!WE'LL SEE YOU NEXT TIME!!\n");
@@ -24,19 +23,19 @@ static struct sysrq_key_op handle_sysrq_op =
     .action_msg  = "Roulette",
 };
  
-static int my_init (void)
+static int sysrq_init (void)
 {
     int ret = register_sysrq_key('a', &handle_sysrq_op);
     printk("[+] Welcome to Roulette! echo a > /proc/sysrq-trigger to play!\n");
     return ret;
 }
  
-static void my_exit (void)
+static void sysrq_exit (void)
 {
     unregister_sysrq_key('a', &handle_sysrq_op);
 }
  
-module_init(my_init);
-module_exit(my_exit);
+module_init(sysrq_init);
+module_exit(sysrq_exit);
  
 MODULE_LICENSE ("GPL");
